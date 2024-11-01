@@ -17,7 +17,6 @@
   
 
 	onMount(async function() {
-    // load data from csv (source: https://chicagohealthatlas.org/download)
     let table = d3.csv('chi-crime-data.csv', (d) => ({
           ...d,
           'Name': d['Name'].substring(6),
@@ -32,10 +31,8 @@
       .then((d) => d.features);
     
     await Promise.all([table, geocoord]).then((values) => {
-      // console.log(values);
       let table = values[0];
       let geocoord = values[1];
-      // join the variables we want to show on the map
       for (let i = 0; i < geocoord.length; i++) {
         let tract = geocoord[i].properties.name10;
         let found = false;
@@ -51,13 +48,11 @@
             data[data.length - 1].properties['burglary'] = table[j]['CZB_2023']
             data[data.length - 1].properties['drug abuse'] = table[j]['CZD_2023']
             data[data.length - 1].properties['homicide'] = table[j]['CZH_2023']
-            // grab other variables as needed
           } else {
             j++;
           }
         }
       }
-      // console.log(data);
       fullData = [...data];
     });
 	});
@@ -123,8 +118,7 @@
     display: flex;
     
     justify-content: center;  
-    /* flex-flow: row; */ 
-    
+
 
     height: 100%;
     padding: 15px;
@@ -145,12 +139,10 @@
   }
 
   .map { 
-    /* flex:1 1 auto; */
     flex-grow:1;
   }
 			
   .hist { 
-    /* flex:0 1 auto; */
     flex-grow:0;
   }
 			

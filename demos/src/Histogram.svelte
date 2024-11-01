@@ -97,7 +97,6 @@
                     height={chartH - yScale(d.length)}/>
             {/each}
 
-            <!-- Text label for the selected tract's data point -->
             {#if selectedTract}
                 <text
                     x={xScale(selectedTract.properties[variable]) + ((xScale(bins[1].x1) - xScale(bins[1].x0)) / 2)}
