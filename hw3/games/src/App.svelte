@@ -3,16 +3,22 @@
   import { onMount } from 'svelte';
   import LineChart from './LineChart.svelte';
   import * as d3 from 'd3';
+  import { writable } from 'svelte/store';
 
   let allData = [];
   let filteredData = [];
   let selectedAgeGroup = '';
   let selectedGenre = '';
+  let selectedPlatform = '';
+  let selectedGameMode = '';
+  let selectedGameDetails = writable('');
+  let selectedAttribute = writable('Price');
+  
 
   onMount(async () => {
     allData = await d3.csv('video_game_reviews.csv', d => ({
       Title: d['Game Title'],
-      UserRating: +d['User Rating'],
+      UserRating: (((+d['User Rating']-10.5)/40) * 10),
       AgeGroupTargeted: d['Age Group Targeted'],
       Price: d['Price'],
       Platform: d['Platform'],
@@ -36,7 +42,9 @@
 
   $: {filteredData = allData.filter(d =>
     (selectedAgeGroup === '' || d.AgeGroupTargeted === selectedAgeGroup) &&
-    (selectedGenre === '' || d.Genre === selectedGenre)
+    (selectedGenre === '' || d.Genre === selectedGenre) &&
+    (selectedPlatform == '' || d.Platform === selectedPlatform) &&
+    (selectedGameMode == '' || d.GameMode === selectedGameMode)
   );
   console.log("Filtered data:", filteredData);}
 </script>
@@ -46,7 +54,7 @@
   <p id="intro-text">
     With the birth of the first massive-scale computer machine and "Hello World" as the first computer programme, video games,
     now considered as the ninth art, have grown and peaked in 21st century for its unparallel qualities of narratives, soundtracks, graphics, etc. alongside
-     with the development of hardware and Internet. 
+     with the development of hardware and Internet. <br><br>
     It is simply an enjoyment to play games. Whether you’re the competitive type, a team player, someone who enjoys a good story, or just likes to explore, you can always find
     your belongings and communities in this era, where many high-quality video games are coming out from all over the world.
     This website is all about catching you up on the latest in video games from the last decade or so (2010-2023). Wondering which games are worth your time or how the world of gaming has evolved? You're in the right place! <br><br>
@@ -72,14 +80,50 @@
         <option value={genre}>{genre}</option>
       {/each}
     </select>
+
+    <label for="platform">Platform:</label>
+    <select id="platform" bind:value={selectedPlatform}>
+      <option value="">All Platforms</option>
+      {#each Array.from(new Set(allData.map(d => d.Platform))) as platform}
+        <option value={platform}>{platform}</option>
+      {/each}
+    </select>
+
+    <label for="gameMode">Game Mode:</label>
+    <select id="gameMode" bind:value={selectedGameMode}>
+      <option value="">All Games</option>
+      {#each Array.from(new Set(allData.map(d => d.GameMode))) as gameMode}
+        <option value={gameMode}>{gameMode}</option>
+      {/each}
+    </select>
+
+  </div>
+  <div class="info-box">
+    {@html $selectedGameDetails || 'Click on a bar to see details...'}
   </div>
  
   <div class="chart-container">
-    <Histogram filteredData={filteredData}/>
+    <Histogram filteredData={filteredData} {selectedGameDetails}/>
   </div>
+
+  <h2>2. See the Gaming Industry Trends</h2>
+  <p id="section2-text"> 
+    Life moves quickly, and so does the gaming industry. Check out this summary to catch up with the trends in user ratings, prices, story quality, and more, covering the years 2010 to 2023. See how games have evolved over time!
+  </p>
+
+  <label for="attribute">Variable:</label>
+  <select id="attribute" bind:value={$selectedAttribute}>
+    <option value="UserRating">User Rating</option>
+    <option value="Price">Price</option>
+    <option value="GameLength">Game Length</option>
+    <option value="GraphicsQuality">Graphics Quality</option>
+    <option value="SoundtrackQuality">Soundtrack Quality</option>
+  </select>
+
   <div class="chart-container">
-    <LineChart/>
+    <LineChart {filteredData} attribute={$selectedAttribute} />
   </div>
+
 </main>
 
 <style>
@@ -109,6 +153,19 @@
     justify-content: flex-start;
     gap: 10px; 
     margin-bottom: 20px;
+  }
+
+  .info-box {
+    width: 300px;
+    min-height: 100px;
+    padding: 10px;
+    margin-left: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    color: #333;
+    font-size: 0.9em;
+    line-height: 1.4;
   }
 
 </style>

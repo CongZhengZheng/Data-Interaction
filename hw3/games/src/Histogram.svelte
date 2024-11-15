@@ -1,6 +1,9 @@
 <script>
+
   import * as d3 from 'd3';
   export let filteredData;
+  export let selectedGameDetails;
+
   let svg;
   let tooltip;
 
@@ -49,7 +52,27 @@
       .attr("width", x.bandwidth())
       .attr("y", d => y(d.UserRating))
       .attr("height", d => height - y(d.UserRating))
-      .style("fill", "#6a5acd");
+      .style("fill", "#6a5acd")
+      .on("click", (event, d) => { // Make sure `d` is used here
+      selectedGameDetails.set(`Title: ${d.Title}, 
+                              Rating: ${d.UserRating},
+                              Age Group Targeted: ${d.AgeGroupTargeted},
+                              Price:${d.Price}, 
+                              Platform:${d.Platform},
+                              Required Special Device:${d.RequiredSpecialDevice},
+                              Developer:${d.Developer},
+                              Publisher:${d.Publisher},
+                              Release Year:${d.ReleaseYear},
+                              Genre:${d.Genre},
+                              Multiplayer:${d.Multiplayer}, 
+                              Game Length (Hours):${d.GameLength}, 
+                              Graphics Quality: ${d.GraphicsQaulity},
+                              Soundtrack Quality: ${d.SoundtrackQuality},
+                              Story Quality: ${d.StoryQuality}, 
+                              Game Mode: ${d.GameMode},
+                              Minimum Number of Players: ${d.MinNumberofPlayers}, 
+                              User Review: ${d.UserReviewText}`);
+    });
 
     bars.exit().remove();
 
@@ -63,19 +86,7 @@
     svgElement.append("g")
       .call(d3.axisLeft(y));
   }
-
-  function handleMouseOver(event, d) {
-    d3.select(event.currentTarget).style("fill", "yellow");
-    tooltip.style("visibility", "visible")
-           .html(`Title: ${d.Title}<br>Rating: ${d.UserRating}<br>Age Group: ${d.AgeGroupTargeted}<br>Price: ${d.Price}<br>Platform: ${d.Platform}`)
-           .style("left", `${event.pageX + 10}px`)
-           .style("top", `${event.pageY + 10}px`);
-  }
-
-  function handleMouseOut(event, d) {
-    d3.select(event.currentTarget).style("fill", "#6a5acd");
-    tooltip.style("visibility", "hidden");
-  }
+  
 </script>
 
 <svg bind:this={svg} width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}></svg>
