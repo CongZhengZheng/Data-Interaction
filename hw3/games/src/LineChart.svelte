@@ -40,11 +40,11 @@
         const line = d3.line()
             .x(d => x(d.ReleaseYear))
             .y(d => y(d.AvgPrice))
-            .curve(d3.curveMonotoneX); // This makes the line smooth
+            .curve(d3.curveMonotoneX); 
 
-        // Add the line path.
+ 
         g.append("path")
-            .datum(processedData) // Binds processed data to the line
+            .datum(processedData) 
             .attr("fill", "none")
             .attr("stroke", "steelblue")
             .attr("stroke-width", 2)

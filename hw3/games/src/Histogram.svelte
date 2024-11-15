@@ -21,14 +21,14 @@
   function updateHistogram() {
 
     let sortedData = [...filteredData]
-      .sort((a, b) => b.UserRating - a.UserRating) // Ensure sorting by UserRating
-      .slice(0, 100); // Take top 100
+      .sort((a, b) => b.UserRating - a.UserRating) 
+      .slice(0, 100); 
 
     console.log("Number of items to plot:", sortedData.length);
 
     const svgElement = d3.select(svg)
       .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
-      .html(''); // Clear the SVG contents before drawing
+      .html(''); 
 
     let x = d3.scaleBand()
       .domain(sortedData.map(d => d.Title))

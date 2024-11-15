@@ -46,7 +46,7 @@
   <p id="intro-text">
     With the birth of the first massive-scale computer machine and "Hello World" as the first computer programme, video games,
     now considered as the ninth art, have grown and peaked in 21st century for its unparallel qualities of narratives, soundtracks, graphics, etc. alongside
-     with the development of hardware and Internet. <br><br>
+     with the development of hardware and Internet. 
     It is simply an enjoyment to play games. Whether you’re the competitive type, a team player, someone who enjoys a good story, or just likes to explore, you can always find
     your belongings and communities in this era, where many high-quality video games are coming out from all over the world.
     This website is all about catching you up on the latest in video games from the last decade or so (2010-2023). Wondering which games are worth your time or how the world of gaming has evolved? You're in the right place! <br><br>
