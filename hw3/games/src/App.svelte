@@ -104,7 +104,7 @@
     {@html $selectedGameDetails || 'Click on a bar to see details...'}
   </div>
  
-  <div class="chart-container">
+  <div class="scroll-container">
     <Histogram filteredData={filteredData1} {selectedGameDetails}/>
   </div>
 
@@ -139,6 +139,12 @@
   h1, h2, p {
     text-align: left;
     width: 100%; 
+  }
+
+  .scroll-container {
+  width: 100%; 
+  overflow-x: auto; 
+  white-space: nowrap;
   }
   .chart-container {
     width: 100%; 
