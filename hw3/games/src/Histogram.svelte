@@ -53,6 +53,7 @@
       .attr("y", d => y(d.UserRating))
       .attr("height", d => height - y(d.UserRating))
       .style("fill", "#6a5acd")
+      .style("cursor", "pointer")
       .on("click", (event, d) => { // Make sure `d` is used here
       selectedGameDetails.set(`Title: ${d.Title}, 
                               Rating: ${d.UserRating},

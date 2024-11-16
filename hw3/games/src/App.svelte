@@ -6,7 +6,8 @@
   import { writable } from 'svelte/store';
 
   let allData = [];
-  let filteredData = [];
+  let filteredData1 = [];
+  let filteredData2 = [];
   let selectedAgeGroup = '';
   let selectedGenre = '';
   let selectedPlatform = '';
@@ -20,33 +21,34 @@
       Title: d['Game Title'],
       UserRating: (((+d['User Rating']-10.5)/40) * 10),
       AgeGroupTargeted: d['Age Group Targeted'],
-      Price: d['Price'],
+      Price: +d['Price'],
       Platform: d['Platform'],
       RequiresSpecialDevice: d['Requires Special Device'],
       Developer: d['Developer'],
       Publisher: d['Publisher'],
-      ReleaseYear: d['Release Year'],
+      ReleaseYear: +d['Release Year'],
       Genre: d['Genre'],
       Multiplayer: d['Multiplayer'],
-      GameLength: d['Game Length (Hours)'],
+      GameLength: +d['Game Length (Hours)'],
       GraphicsQuality: d['Graphics Quality'],
       SoundtrackQuality: d['Soundtrack Quality'],
       StoryQuality: d['Story Quality'],
       UserReviewText: d['User Review Text'],
       GameMode: d['Game Mode'],
-      MinNumberofPlayers: d['Min Number of Players']
+      MinNumberofPlayers: +d['Min Number of Players']
     }));
-    filteredData = allData;
+    filteredData1 = allData;
+    filteredData2 = allData;
     console.log("Loaded Data:",allData)
   });
 
-  $: {filteredData = allData.filter(d =>
+  $: {filteredData1 = allData.filter(d =>
     (selectedAgeGroup === '' || d.AgeGroupTargeted === selectedAgeGroup) &&
     (selectedGenre === '' || d.Genre === selectedGenre) &&
     (selectedPlatform == '' || d.Platform === selectedPlatform) &&
     (selectedGameMode == '' || d.GameMode === selectedGameMode)
   );
-  console.log("Filtered data:", filteredData);}
+  console.log("Filtered data:", filteredData1);}
 </script>
 
 <main>
@@ -103,7 +105,7 @@
   </div>
  
   <div class="chart-container">
-    <Histogram filteredData={filteredData} {selectedGameDetails}/>
+    <Histogram filteredData={filteredData1} {selectedGameDetails}/>
   </div>
 
   <h2>2. See the Gaming Industry Trends</h2>
@@ -116,12 +118,10 @@
     <option value="UserRating">User Rating</option>
     <option value="Price">Price</option>
     <option value="GameLength">Game Length</option>
-    <option value="GraphicsQuality">Graphics Quality</option>
-    <option value="SoundtrackQuality">Soundtrack Quality</option>
   </select>
 
   <div class="chart-container">
-    <LineChart {filteredData} attribute={$selectedAttribute} />
+    <LineChart filteredData={filteredData2} attribute={$selectedAttribute} />
   </div>
 
 </main>

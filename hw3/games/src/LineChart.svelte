@@ -29,16 +29,14 @@
         average: sums[year].sum / sums[year].count
       }));
   
-      // Clear the previous chart content
       d3.select(svg).selectAll('*').remove();
   
-      // Setup scales
       let xScale = d3.scaleLinear()
         .domain(d3.extent(averages, d => d.year))
         .range([0, width]);
   
       let yScale = d3.scaleLinear()
-        .domain([0, d3.max(averages, d => d.average)])
+        .domain([0, Math.ceil(d3.max(filteredData, d => d[attribute]))])
         .range([height, 0]);
   
       // Define the line
@@ -57,8 +55,39 @@
         .datum(averages)
         .attr('fill', 'none')
         .attr('stroke', 'steelblue')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 1)
         .attr('d', line);
+
+        let dots = chart.selectAll(".dot")
+    .data(averages)
+    .enter()
+    .append("g")
+    .attr("class", "dot-group");
+
+  dots.append("circle")
+    .attr("class", "dot")
+    .attr("cx", d => xScale(d.year))
+    .attr("cy", d => yScale(d.average))
+    .attr("r", 3)
+    .style("fill", "#69b3a2")
+    .style("cursor", "pointer");
+
+  dots.append("text")
+    .attr("x", d => xScale(d.year))
+    .attr("y", d => yScale(d.average) - 10)
+    .attr("text-anchor", "middle")
+    .style("font-size", "8px")
+    .style("visibility", "hidden")
+    .style("fill", "white")
+    .text(d => `${d.average.toFixed(2)}`);
+
+  dots.on("click", function(event, d) {
+    // Toggle visibility of the text
+    let isVisible = d3.select(this).select("text").style("visibility") === "visible";
+    d3.selectAll(".dot-group text").style("visibility", "hidden"); // Hide all first
+    d3.select(this).select("text").style("visibility", isVisible ? "hidden" : "visible");
+  });
+
   
       // Add the X and Y axes
       chart.append('g')
