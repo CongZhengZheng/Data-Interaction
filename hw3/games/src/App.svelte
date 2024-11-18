@@ -4,16 +4,19 @@
   import LineChart from './LineChart.svelte';
   import * as d3 from 'd3';
   import { writable } from 'svelte/store';
+  import PieChart from './PieChart.svelte';
 
   let allData = [];
   let filteredData1 = [];
   let filteredData2 = [];
+  let filteredData3 = [];
   let selectedAgeGroup = '';
   let selectedGenre = '';
   let selectedPlatform = '';
   let selectedGameMode = '';
   let selectedGameDetails = writable('');
   let selectedAttribute = writable('Price');
+  let selectedYear = writable('');
   
 
   onMount(async () => {
@@ -123,6 +126,28 @@
   <div class="chart-container">
     <LineChart filteredData={filteredData2} attribute={$selectedAttribute} />
   </div>
+
+  <p>On average, games in each year receive a score of around 4.8, the price is set at around 40 dollars, and the game length is around 32 hours.</p>
+
+  <h2>3. Top 10 Game Developers of each year</h2>
+  <p id="section3-text">
+    As an avid gamer, big-name companies like Nintendo, Capcom, and Blizzard immediately spring to mind, along with indie studios like those behind <i>Disco Elysium</i> and the <i>Sherlock Holmes</i> Series. There are a thousand Hamlets in a thousand people's eyes. Nonetheless, here I would like to show you by statistics the top 10 game developers delivering on average the highest-rated games each year. While the quality of games from a developer can vary, this analysis seeks to identify those companies which consistently producing high-quality games. And a personal note — as a dedicated fan of Keiichiro Toyama, any game from them is an instant buy for me!
+  </p>
+
+  <div class="controls">
+    <label for="yearSelect">Select Year:</label>
+    <select id="yearSelect" bind:value={$selectedYear}>
+      <!-- Dynamically generate year options based on data -->
+      {#each Array.from(new Set(allData.map(d => d.ReleaseYear))) as year}
+        <option value={year}>{year}</option>
+      {/each}
+    </select>
+
+    <!-- Other filters here -->
+  </div>
+
+  <PieChart data={filteredData3} year={$selectedYear}/>
+
 
 </main>
 
