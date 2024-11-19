@@ -16,7 +16,7 @@
   let selectedGameMode = '';
   let selectedGameDetails = writable('');
   let selectedAttribute = writable('Price');
-  let selectedYear = writable('');
+  let selectedYear = writable(2010);
   
 
   onMount(async () => {
@@ -136,17 +136,16 @@
   </p>
 
   <div class="controls">
-    <label for="yearSelect">Select Year:</label>
-    <select id="yearSelect" bind:value={$selectedYear}>
-      <!-- Dynamically generate year options based on data -->
-      {#each Array.from(new Set(allData.map(d => d.ReleaseYear))).sort((a, b) => a - b) as year}
-        <option value={year}>{year}</option>
-      {/each}
-    </select>
-
+    <label for="yearSlider">Select Year:</label>
+    <input type="range" min={Math.min(...allData.map(d => d.ReleaseYear))} max={Math.max(...allData.map(d => d.ReleaseYear))} bind:value={$selectedYear} id="yearSlider" />
+    <span>{$selectedYear}</span>
   </div>
 
   <PieChart data={filteredData3} year={$selectedYear}/>
+
+  <p id="concluding-text">
+    The website is created by gamer Tongwen Zheng, who is a first-year Master's student in Data Science programme. I hope you will enjoy this website. Hooray! 
+  </p>
 
 
 </main>
