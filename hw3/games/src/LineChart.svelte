@@ -15,7 +15,6 @@
     }
   
     function updateChart() {
-      // Calculate averages for the selected attribute per year
       let sums = {};
       filteredData.forEach(d => {
         let year = d.ReleaseYear;
@@ -44,13 +43,11 @@
         .x(d => xScale(d.year))
         .y(d => yScale(d.average));
   
-      // Create the SVG container
       let chart = d3.select(svg)
         .attr('viewBox', `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`)
         .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
   
-      // Draw the line
       chart.append('path')
         .datum(averages)
         .attr('fill', 'none')
@@ -82,14 +79,11 @@
     .text(d => `${d.average.toFixed(2)}`);
 
   dots.on("click", function(event, d) {
-    // Toggle visibility of the text
     let isVisible = d3.select(this).select("text").style("visibility") === "visible";
     d3.selectAll(".dot-group text").style("visibility", "hidden"); // Hide all first
     d3.select(this).select("text").style("visibility", isVisible ? "hidden" : "visible");
   });
 
-  
-      // Add the X and Y axes
       chart.append('g')
         .attr('transform', `translate(0,${height})`)
         .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));

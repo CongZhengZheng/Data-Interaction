@@ -42,6 +42,7 @@
     }));
     filteredData1 = allData;
     filteredData2 = allData;
+    filteredData3 = allData;
     console.log("Loaded Data:",allData)
   });
 
@@ -138,12 +139,11 @@
     <label for="yearSelect">Select Year:</label>
     <select id="yearSelect" bind:value={$selectedYear}>
       <!-- Dynamically generate year options based on data -->
-      {#each Array.from(new Set(allData.map(d => d.ReleaseYear))) as year}
+      {#each Array.from(new Set(allData.map(d => d.ReleaseYear))).sort((a, b) => a - b) as year}
         <option value={year}>{year}</option>
       {/each}
     </select>
 
-    <!-- Other filters here -->
   </div>
 
   <PieChart data={filteredData3} year={$selectedYear}/>
